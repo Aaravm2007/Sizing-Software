@@ -10,6 +10,7 @@ from ttkbootstrap.constants import *
 from openpyxl.utils import range_boundaries
 import docx
 from docx.shared import Inches
+import math
 wb = openpyxl.load_workbook('Sizing_template.xlsx')
 sheet = wb.active
 wb2 = openpyxl.load_workbook('Standard costing sheet.xlsx', data_only=True)
@@ -283,6 +284,13 @@ def input2():
         capacity_required = round(capacity_required_calc, 1)
         capacity_required_entry.delete(0, tk.END)
         capacity_required_entry.insert(0, capacity_required)
+        try:
+            backup_time = (backup_requirement / capacity_required_calc) * float(nearest_available_capacity_entry.get())
+            backup_time_entry.delete(0, tk.END)
+            backup_time_entry.insert(0, round(backup_time,1))
+        except ValueError:
+            backup_time_entry.delete(0, tk.END)
+            return
     ageing_entry.bind("<KeyRelease>", on_ageing_change)
     capacity_required_label = ttkb.Label(input_frame2, text="Capacity Required(Ah):", font=("Segoe UI", 12))
     capacity_required_label.grid(row=9, column=0, padx=10, pady=5, sticky="e")
@@ -304,9 +312,9 @@ def input2():
             backup_time_entry.delete(0, tk.END)
             total_available_energy_entry.delete(0, tk.END)
             return
-        backup_time = (backup_requirement / capacity_required) * value
+        backup_time = (backup_requirement / float(capacity_required_entry.get())) * value
         backup_time_entry.delete(0, tk.END)
-        backup_time_entry.insert(0, round(backup_time,1))
+        backup_time_entry.insert(0, math.floor(backup_time))
         total_available_energy = ((nominal_dc_voltage * value) / 1000)
         total_available_energy_entry.delete(0, tk.END)
         total_available_energy_entry.insert(0,total_available_energy)
@@ -426,7 +434,6 @@ def input2():
     back_button = ttkb.Button(input_frame2, text="Back", command=back_to_input)
     back_button.grid(row=14, column=2, pady=20, sticky="w")
 
-
 def costing_screen():
     global costing_frame
     def export_costing():
@@ -496,6 +503,15 @@ def costing_screen():
                     value = round(value, 2)
                 tree.set(tree.get_children()[row_idx], f"Option {option_idx+1}", value if value is not None else "")
         highlight_excel_rows = [21, 34, 17, 40, 42]
+        global prices, centretapping
+        prices = []
+        for option_idx, col_letter in enumerate(found_columns[:3]):
+            price_cell_value = sheet3[f"{col_letter}40"].value
+            prices.append(price_cell_value)
+        centretapping=[]
+        for option_idx, col_letter in enumerate(found_columns[:3]):
+            centretapping_cell_value = sheet3[f"{col_letter}1"].value
+            centretapping.append(centretapping_cell_value)
         highlight_tree_indices = [row - row_start for row in highlight_excel_rows]
         tree.tag_configure('highlight', background='yellow', foreground='black')
         for idx in highlight_tree_indices:
@@ -529,7 +545,7 @@ def costing_screen():
     costing_frame.grid_columnconfigure(0, weight=1)
     costing_frame.grid_columnconfigure(1, weight=1)
     export_button = ttkb.Button(costing_frame, text="Export Costing", command=export_costing)
-    export_button.grid(row=4, column=0, pady=20)
+    export_button.grid(row=5, column=0, pady=20)
     def back_to_input2():
         costing_frame.destroy()
         input2()
@@ -557,30 +573,79 @@ def costing_screen():
         total_available_energy_entry.insert(0, total_available_energy)
         backup_time_entry.insert(0, backup_time)
 
+    button_frame = ttkb.Frame(costing_frame)
+    button_frame.grid(row=4, column=1 ,pady=10)
+    option1_button = ttkb.Button(button_frame, text="Option 1", command=option1)
+    option1_button.grid(row=0, column=0, padx=5)
+    option2_button = ttkb.Button(button_frame, text="Option 2", command=option2)
+    option2_button.grid(row=0, column=1, padx=5)
+    option3_button = ttkb.Button(button_frame, text="Option 3", command=option3)
+    option3_button.grid(row=0, column=2, padx=5)
     make_quote_button = ttkb.Button(costing_frame, text="Make Quote", command=quotation)
-    make_quote_button.grid(row=4, column=1, pady=20)
+    make_quote_button.grid(row=5, column=1, pady=20)
     back_button = ttkb.Button(costing_frame, text="Back", command=back_to_input2)
-    back_button.grid(row=4, column=2, pady=20)
+    back_button.grid(row=5, column=2, pady=20)
 
 def quotation():
-    costing_frame.destroy()
-    quote_window = ttkb.Frame(root)
-    quote_window.place(relx=0.5, rely=0.5, anchor="center")
+    quote_window = ttkb.Toplevel()
+    quote_window.title("Quotation")
+    global main_frame
     main_frame = ttkb.Frame(quote_window)
     main_frame.pack(expand=True, fill="both", padx=20, pady=20)
+    global row_frames
+    global text_areas
     row_frames = []
     text_areas = []
+    def save_to_word():
+        doc = docx.Document("Quote_format_High_Vtg.docx")
+        if not doc.tables:
+            tkmb.showerror("Error", "No table found in the template document.")
+            return
+        table = doc.tables[0]
+        for row_idx, areas in enumerate(text_areas, start=1):
+            while len(table.rows) <= row_idx:
+                table.add_row()
+            row_data = [area.get("1.0", tk.END).strip() for area in areas]
+            if any(row_data):
+                table.rows[row_idx].cells[0].text = str(row_idx)
+            for col_idx, val in enumerate(row_data, start=1):
+                if len(table.rows[row_idx].cells) > col_idx:
+                    table.rows[row_idx].cells[col_idx].text = val
+            # Calculate and set the product in the 6th column
+            try:
+                quantity = float(row_data[2]) if row_data[2] else 0
+                price = float(row_data[3]) if row_data[3] else 0
+                total = quantity * price
+                if len(table.rows[row_idx].cells) > 5:
+                    table.rows[row_idx].cells[5].text = str(round(total, 2))
+            except Exception:
+                if len(table.rows[row_idx].cells) > 5:
+                    table.rows[row_idx].cells[5].text = ""
+        save_path = filedialog.asksaveasfilename(defaultextension=".docx", filetypes=[("Word Document", "*.docx")])
+        if save_path:
+            doc.save(save_path)
+            tkmb.showinfo("Success", "Quotation saved to Word document.")
 
-    add_row_button = None
-    save_button = None
+    # Create the button frame below main_frame
+    button_frame = ttkb.Frame(quote_window)
+    button_frame.pack(fill="x", padx=20, pady=(0, 20))
+    save_button = ttkb.Button(button_frame, text="Save to Word", command=save_to_word)
+    save_button.pack(padx=10, pady=10)
 
-    def add_row_frame():
-        nonlocal add_row_button
-        nonlocal save_button
-        if save_button is None:
-            save_button.pack_forget()
-        if add_row_button is not None:
-            add_row_button.pack_forget()
+def option1():
+    global option
+    option=1
+    add_row_frame()
+def option2():
+    global option
+    option=2
+    add_row_frame()
+def option3():
+    global option
+    option=3
+    add_row_frame()
+
+def add_row_frame():
         row_frame = ttkb.Frame(main_frame)
         row_frame.pack(side="top", fill="x", pady=10)
 
@@ -615,43 +680,29 @@ def quotation():
         text_area4.pack(side="top", fill="both", expand=True)
         row_frames.append(row_frame)
         text_areas.append((text_area1, text_area2, text_area3, text_area4))
-        add_row_button.pack(side="top", pady=10)
-        save_button.pack(side="top", pady=10)
-        
-
-    def save_to_word():
-        doc = docx.Document("Quote_format_High_Vtg.docx")
-        if not doc.tables:
-            tkmb.showerror("Error", "No table found in the template document.")
-            return
-        table = doc.tables[0]
-        for row_idx, areas in enumerate(text_areas, start=1):
-            while len(table.rows) <= row_idx:
-                table.add_row()
-            row_data = [area.get("1.0", tk.END).strip() for area in areas]
-            if any(row_data):
-                table.rows[row_idx].cells[0].text = str(row_idx)
-            for col_idx, val in enumerate(row_data, start=1):
-                if len(table.rows[row_idx].cells) > col_idx:
-                    table.rows[row_idx].cells[col_idx].text = val
-            # Calculate and set the product in the 6th column
-            try:
-                quantity = float(row_data[2]) if row_data[2] else 0
-                price = float(row_data[3]) if row_data[3] else 0
-                total = quantity * price
-                if len(table.rows[row_idx].cells) > 5:
-                    table.rows[row_idx].cells[5].text = str(round(total, 2))
-            except Exception:
-                if len(table.rows[row_idx].cells) > 5:
-                    table.rows[row_idx].cells[5].text = ""
-        save_path = filedialog.asksaveasfilename(defaultextension=".docx", filetypes=[("Word Document", "*.docx")])
-        if save_path:
-            doc.save(save_path)
-            tkmb.showinfo("Success", "Quotation saved to Word document.")
-
-    add_row_button = ttkb.Button(main_frame, text="Add Row", command=add_row_frame)
-    save_button = ttkb.Button(main_frame, text="Save to Word", command=save_to_word)
-    add_row_frame()
+        text_area2.insert("1.0", f"Solution1: Lithium Battery Pack\n(HVL {offered_battery_config_value}) with\n Approximate Backup Time: {math.floor(backup_time)}Mins At BOL \n With Cabinet and inbuilt BMS")
+        text_area3.insert("1.0", "1")
+        if option == 1:
+            if centretapping[0] == "centre tap":
+                centretapping_text = "With Centre Tapping"
+            else:
+                centretapping_text = "Without Centre Tapping"
+            text_area1.insert("1.0", f"{ups_rating}KVA: {backup_requirement}Min Backup \n(Load: {calc_load}kW)\n(Cell type:)\n({centretapping_text})")
+            text_area4.insert("1.0", round(prices[0],2))
+        elif option == 2:
+            if centretapping[1] == "centre tap":
+                centretapping_text = "With Centre Tapping"
+            else:
+                centretapping_text = "Without Centre Tapping"
+            text_area1.insert("1.0", f"{ups_rating}KVA: {backup_requirement}Min Backup \n(Load: {calc_load}kW)\n(Cell type:)\n({centretapping_text})")
+            text_area4.insert("1.0", round(prices[1],2))
+        elif option == 3:
+            if centretapping[2] == "centre tap":
+                centretapping_text = "With Centre Tapping"
+            else:
+                centretapping_text = "Without Centre Tapping"
+            text_area1.insert("1.0", f"{ups_rating}KVA: {backup_requirement}Min Backup \n(Load: {calc_load}kW)\n(Cell type:)\n({centretapping_text})")
+            text_area4.insert("1.0", round(prices[2],2))
 
 mainscreen()
 root.mainloop()
