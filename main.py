@@ -69,6 +69,10 @@ def mainscreen():
     search_button.grid(row=4, column=0, columnspan=2, pady=10)
 
 def input():
+    try:
+        costing_frame.destroy()
+    except:
+        pass
     global ups_make_entry, ups_model_entry, ups_rating_entry, actual_loadkva_entry, actual_loadkw_entry
     global power_factor_entry, inverter_efficiency_entry, nominal_dc_voltage_entry, backup_requirement_entry
     global cell_chemisrty_combobox
@@ -544,8 +548,12 @@ def costing_screen():
     costing_frame.grid_rowconfigure(1, weight=1)
     costing_frame.grid_columnconfigure(0, weight=1)
     costing_frame.grid_columnconfigure(1, weight=1)
-    export_button = ttkb.Button(costing_frame, text="Export Costing", command=export_costing)
-    export_button.grid(row=5, column=0, pady=20)
+    button_frame3= ttkb.Frame(costing_frame)
+    button_frame3.grid(row=5, column=0, pady=20)
+    new_costing_button = ttkb.Button(button_frame3, text="New Costing", command=new_costing)
+    new_costing_button.grid(row=0, column=0, padx=20)
+    export_button = ttkb.Button(button_frame3, text="Export Costing", command=export_costing,bootstyle="success")
+    export_button.grid(row=0, column=1, padx=20)
     def back_to_input2():
         costing_frame.destroy()
         input2()
@@ -572,19 +580,22 @@ def costing_screen():
         offered_battery_config_entry.insert(0, offered_battery_config_value)
         total_available_energy_entry.insert(0, total_available_energy)
         backup_time_entry.insert(0, backup_time)
-
     button_frame = ttkb.Frame(costing_frame)
-    button_frame.grid(row=4, column=1 ,pady=10)
-    option1_button = ttkb.Button(button_frame, text="Option 1", command=option1)
-    option1_button.grid(row=0, column=0, padx=5)
-    option2_button = ttkb.Button(button_frame, text="Option 2", command=option2)
-    option2_button.grid(row=0, column=1, padx=5)
-    option3_button = ttkb.Button(button_frame, text="Option 3", command=option3)
-    option3_button.grid(row=0, column=2, padx=5)
-    make_quote_button = ttkb.Button(costing_frame, text="Make Quote", command=quotation)
+    button_frame.grid(row=4, column=1 ,pady=10,columnspan=2)
+    option1_button = ttkb.Button(button_frame, text="Add To Quotation", command=option1,bootstyle="warning")
+    option1_button.grid(row=0, column=0, padx=40)
+    option2_button = ttkb.Button(button_frame, text="Add To Quotation", command=option2,bootstyle="warning")
+    option2_button.grid(row=0, column=1, padx=40)
+    option3_button = ttkb.Button(button_frame, text="Add To Quotation", command=option3,bootstyle="warning")
+    option3_button.grid(row=0, column=2, padx=40)
+    make_quote_button = ttkb.Button(costing_frame, text="Make Quote", command=quotation,bootstyle="success")
     make_quote_button.grid(row=5, column=1, pady=20)
-    back_button = ttkb.Button(costing_frame, text="Back", command=back_to_input2)
-    back_button.grid(row=5, column=2, pady=20)
+    button_frame2= ttkb.Frame(costing_frame)
+    button_frame2.grid(row=5, column=2, pady=20)
+    back_button = ttkb.Button(button_frame2, text="Back", command=back_to_input2,bootstyle="danger")
+    back_button.grid(row=0, column=0)
+    new_sizig_button = ttkb.Button(button_frame2, text="New Sizing", command=input,bootstyle="danger")
+    new_sizig_button.grid(row=0, column=1, padx=5)
 
 def quotation():
     quote_window = ttkb.Toplevel()
@@ -703,6 +714,199 @@ def add_row_frame():
                 centretapping_text = "Without Centre Tapping"
             text_area1.insert("1.0", f"{ups_rating}KVA: {backup_requirement}Min Backup \n(Load: {calc_load}kW)\n(Cell type:)\n({centretapping_text})")
             text_area4.insert("1.0", round(prices[2],2))
+
+def new_costing():
+    new_costing_screen = ttkb.Toplevel()
+    new_costing_screen.title("New Costing")
+
+    # --- Group: Battery Details ---
+    battery_details_frame = ttkb.LabelFrame(new_costing_screen, text="Battery Details", bootstyle="info")
+    battery_details_frame.grid(row=0, column=0, columnspan=2, padx=10, pady=10, sticky="ew")
+
+    new_costing_voltagelabel = ttkb.Label(battery_details_frame, text="Voltage:")
+    new_costing_voltagelabel.grid(row=0, column=0, padx=10, pady=5, sticky="e")
+    new_costing_voltageentry = ttkb.Entry(battery_details_frame, width=30)
+    new_costing_voltageentry.grid(row=0, column=1, padx=10, pady=5)
+    #new_costing_voltageentry.insert(0, nominal_dc_voltage)
+
+    new_costing_capacitylabel = ttkb.Label(battery_details_frame, text="Ampere Capacity:")
+    new_costing_capacitylabel.grid(row=1, column=0, padx=10, pady=5, sticky="e")
+    new_costing_capacityentry = ttkb.Entry(battery_details_frame, width=30)
+    new_costing_capacityentry.grid(row=1, column=1, padx=10, pady=5)
+    #new_costing_capacityentry.insert(0, value_str)
+
+    new_costing_kw_label = ttkb.Label(battery_details_frame, text="Calculated kW:")
+    new_costing_kw_label.grid(row=2, column=0, padx=10, pady=5, sticky="e")
+    new_costing_kw_entry = ttkb.Entry(battery_details_frame, width=30)
+    new_costing_kw_entry.grid(row=2, column=1, padx=10, pady=5)
+
+    new_costing_cell_voltage_label = ttkb.Label(battery_details_frame, text="Cell Voltage:")
+    new_costing_cell_voltage_label.grid(row=3, column=0, padx=10, pady=5, sticky="e")
+    new_costing_cell_voltage_entry = ttkb.Entry(battery_details_frame, width=30)
+    new_costing_cell_voltage_entry.grid(row=3, column=1, padx=10, pady=5)
+
+    new_costing_cell_capacity_label = ttkb.Label(battery_details_frame, text="Cell Capacity:")
+    new_costing_cell_capacity_label.grid(row=4, column=0, padx=10, pady=5, sticky="e")
+    new_costing_cell_capacity_entry = ttkb.Entry(battery_details_frame, width=30)
+    new_costing_cell_capacity_entry.grid(row=4, column=1, padx=10, pady=5)
+
+    # Combination of cells in series
+    new_costing_series_label = ttkb.Label(battery_details_frame, text="Combination of Cells in Series:")
+    new_costing_series_label.grid(row=5, column=0, padx=10, pady=5, sticky="e")
+    new_costing_series_entry = ttkb.Entry(battery_details_frame, width=30)
+    new_costing_series_entry.grid(row=5, column=1, padx=10, pady=5)
+
+    # Combination of cells in parallel
+    new_costing_parallel_label = ttkb.Label(battery_details_frame, text="Combination of Cells in Parallel:")
+    new_costing_parallel_label.grid(row=6, column=0, padx=10, pady=5, sticky="e")
+    new_costing_parallel_entry = ttkb.Entry(battery_details_frame, width=30)
+    new_costing_parallel_entry.grid(row=6, column=1, padx=10, pady=5)
+
+    # --- Group: Cell Costing Details ---
+    cell_costing_frame = ttkb.LabelFrame(new_costing_screen, text="Cell Costing Details", bootstyle="info")
+    cell_costing_frame.grid(row=7, column=0, columnspan=2, padx=10, pady=10, sticky="ew")
+
+    # Total No Of Cells
+    new_costing_total_cells_label = ttkb.Label(cell_costing_frame, text="Total No Of Cells:")
+    new_costing_total_cells_label.grid(row=0, column=0, padx=10, pady=5, sticky="e")
+    new_costing_total_cells_entry = ttkb.Entry(cell_costing_frame, width=30)
+    new_costing_total_cells_entry.grid(row=0, column=1, padx=10, pady=5)
+
+    # FOB Cost Of Cells
+    new_costing_fob_cost_label = ttkb.Label(cell_costing_frame, text="FOB Cost Of Cells:")
+    new_costing_fob_cost_label.grid(row=1, column=0, padx=10, pady=5, sticky="e")
+    new_costing_fob_cost_entry = ttkb.Entry(cell_costing_frame, width=30)
+    new_costing_fob_cost_entry.grid(row=1, column=1, padx=10, pady=5)
+
+    # Total FOB Cost of Cells
+    new_costing_total_fob_label = ttkb.Label(cell_costing_frame, text="Total FOB Cost of Cells:")
+    new_costing_total_fob_label.grid(row=2, column=0, padx=10, pady=5, sticky="e")
+    new_costing_total_fob_entry = ttkb.Entry(cell_costing_frame, width=30)
+    new_costing_total_fob_entry.grid(row=2, column=1, padx=10, pady=5)
+
+    # Clearing & Customs
+    new_costing_customs_label = ttkb.Label(cell_costing_frame, text="Clearing & Customs:")
+    new_costing_customs_label.grid(row=3, column=0, padx=10, pady=5, sticky="e")
+    new_costing_customs_entry = ttkb.Entry(cell_costing_frame, width=30)
+    new_costing_customs_entry.grid(row=3, column=1, padx=10, pady=5)
+
+    # Total Landed cost In India
+    new_costing_landed_label = ttkb.Label(cell_costing_frame, text="Total Landed cost In India:")
+    new_costing_landed_label.grid(row=4, column=0, padx=10, pady=5, sticky="e")
+    new_costing_landed_entry = ttkb.Entry(cell_costing_frame, width=30)
+    new_costing_landed_entry.grid(row=4, column=1, padx=10, pady=5)
+
+    # Cost In INR( Rs 87)-(1)
+    new_costing_inr1_label = ttkb.Label(cell_costing_frame, text="Cost In INR( Rs 87)-(1):")
+    new_costing_inr1_label.grid(row=5, column=0, padx=10, pady=5, sticky="e")
+    new_costing_inr1_entry = ttkb.Entry(cell_costing_frame, width=30)
+    new_costing_inr1_entry.grid(row=5, column=1, padx=10, pady=5)
+
+    # --- Group: BMS/PCM & Landed Cost (2) ---
+    bms_landed_frame = ttkb.LabelFrame(new_costing_screen, text="BMS/PCM & Landed Cost (2)", bootstyle="info")
+    bms_landed_frame.grid(row=13, column=0, columnspan=2, padx=10, pady=10, sticky="ew")
+
+    # BMS/PCM
+    new_costing_bms_label = ttkb.Label(bms_landed_frame, text="BMS/PCM:")
+    new_costing_bms_label.grid(row=0, column=0, padx=10, pady=5, sticky="e")
+    new_costing_bms_entry = ttkb.Entry(bms_landed_frame, width=30)
+    new_costing_bms_entry.grid(row=0, column=1, padx=10, pady=5)
+
+    # Clearing & Customs (again)
+    new_costing_customs2_label = ttkb.Label(bms_landed_frame, text="Clearing & Customs (2):")
+    new_costing_customs2_label.grid(row=1, column=0, padx=10, pady=5, sticky="e")
+    new_costing_customs2_entry = ttkb.Entry(bms_landed_frame, width=30)
+    new_costing_customs2_entry.grid(row=1, column=1, padx=10, pady=5)
+
+    # Total Landed cost In India (again)
+    new_costing_landed2_label = ttkb.Label(bms_landed_frame, text="Total Landed cost In India (2):")
+    new_costing_landed2_label.grid(row=2, column=0, padx=10, pady=5, sticky="e")
+    new_costing_landed2_entry = ttkb.Entry(bms_landed_frame, width=30)
+    new_costing_landed2_entry.grid(row=2, column=1, padx=10, pady=5)
+
+    # Cost In INR( Rs 87)-(2)
+    new_costing_inr2_label = ttkb.Label(bms_landed_frame, text="Cost In INR( Rs 87)-(2):")
+    new_costing_inr2_label.grid(row=3, column=0, padx=10, pady=5, sticky="e")
+    new_costing_inr2_entry = ttkb.Entry(bms_landed_frame, width=30)
+    new_costing_inr2_entry.grid(row=3, column=1, padx=10, pady=5)
+
+    # Cabinet (INR)
+    new_costing_cabinet_label = ttkb.Label(new_costing_screen, text="Cabinet (INR):")
+    new_costing_cabinet_label.grid(row=17, column=0, padx=10, pady=10, sticky="e")
+    new_costing_cabinet_entry = ttkb.Entry(new_costing_screen, width=30)
+    new_costing_cabinet_entry.grid(row=17, column=1, padx=10, pady=10)
+
+    # Bus Bar
+    new_costing_busbar_label = ttkb.Label(new_costing_screen, text="Bus Bar:")
+    new_costing_busbar_label.grid(row=18, column=0, padx=10, pady=10, sticky="e")
+    new_costing_busbar_entry = ttkb.Entry(new_costing_screen, width=30)
+    new_costing_busbar_entry.grid(row=18, column=1, padx=10, pady=10)
+
+    # Holder/caps
+    new_costing_holder_label = ttkb.Label(new_costing_screen, text="Holder/caps:")
+    new_costing_holder_label.grid(row=19, column=0, padx=10, pady=10, sticky="e")
+    new_costing_holder_entry = ttkb.Entry(new_costing_screen, width=30)
+    new_costing_holder_entry.grid(row=19, column=1, padx=10, pady=10)
+
+    # Wire & Gasket & Other Accessories
+    new_costing_wire_gasket_label = ttkb.Label(new_costing_screen, text="Wire & Gasket & Other Accessories:")
+    new_costing_wire_gasket_label.grid(row=20, column=0, padx=10, pady=10, sticky="e")
+    new_costing_wire_gasket_entry = ttkb.Entry(new_costing_screen, width=30)
+    new_costing_wire_gasket_entry.grid(row=20, column=1, padx=10, pady=10)
+
+    # Terminals+ Connectors
+    new_costing_terminals_label = ttkb.Label(new_costing_screen, text="Terminals+ Connectors:")
+    new_costing_terminals_label.grid(row=21, column=0, padx=10, pady=10, sticky="e")
+    new_costing_terminals_entry = ttkb.Entry(new_costing_screen, width=30)
+    new_costing_terminals_entry.grid(row=21, column=1, padx=10, pady=10)
+
+    # MCB/Fuse
+    new_costing_mcb_label = ttkb.Label(new_costing_screen, text="MCB/Fuse:")
+    new_costing_mcb_label.grid(row=22, column=0, padx=10, pady=10, sticky="e")
+    new_costing_mcb_entry = ttkb.Entry(new_costing_screen, width=30)
+    new_costing_mcb_entry.grid(row=22, column=1, padx=10, pady=10)
+
+    # Lugs & Slew
+    new_costing_lugs_label = ttkb.Label(new_costing_screen, text="Lugs & Slew:")
+    new_costing_lugs_label.grid(row=23, column=0, padx=10, pady=10, sticky="e")
+    new_costing_lugs_entry = ttkb.Entry(new_costing_screen, width=30)
+    new_costing_lugs_entry.grid(row=23, column=1, padx=10, pady=10)
+
+    # Nut Bolts
+    new_costing_nutbolts_label = ttkb.Label(new_costing_screen, text="Nut Bolts:")
+    new_costing_nutbolts_label.grid(row=24, column=0, padx=10, pady=10, sticky="e")
+    new_costing_nutbolts_entry = ttkb.Entry(new_costing_screen, width=30)
+    new_costing_nutbolts_entry.grid(row=24, column=1, padx=10, pady=10)
+
+    # Fiber glass + rod
+    new_costing_fiberglass_label = ttkb.Label(new_costing_screen, text="Fiber glass + rod:")
+    new_costing_fiberglass_label.grid(row=25, column=0, padx=10, pady=10, sticky="e")
+    new_costing_fiberglass_entry = ttkb.Entry(new_costing_screen, width=30)
+    new_costing_fiberglass_entry.grid(row=25, column=1, padx=10, pady=10)
+
+    # Awg cables
+    new_costing_awg_label = ttkb.Label(new_costing_screen, text="Awg cables:")
+    new_costing_awg_label.grid(row=26, column=0, padx=10, pady=10, sticky="e")
+    new_costing_awg_entry = ttkb.Entry(new_costing_screen, width=30)
+    new_costing_awg_entry.grid(row=26, column=1, padx=10, pady=10)
+
+    # Shipping Charges
+    new_costing_shipping_label = ttkb.Label(new_costing_screen, text="Shipping Charges:")
+    new_costing_shipping_label.grid(row=27, column=0, padx=10, pady=10, sticky="e")
+    new_costing_shipping_entry = ttkb.Entry(new_costing_screen, width=30)
+    new_costing_shipping_entry.grid(row=27, column=1, padx=10, pady=10)
+
+    # Packaging cost with safety packs
+    new_costing_packaging_label = ttkb.Label(new_costing_screen, text="Packaging cost with safety packs:")
+    new_costing_packaging_label.grid(row=28, column=0, padx=10, pady=10, sticky="e")
+    new_costing_packaging_entry = ttkb.Entry(new_costing_screen, width=30)
+    new_costing_packaging_entry.grid(row=28, column=1, padx=10, pady=10)
+
+    # Total Other Chargers©(3)
+    new_costing_total_other_label = ttkb.Label(new_costing_screen, text="Total Other Chargers©(3):")
+    new_costing_total_other_label.grid(row=29, column=0, padx=10, pady=10, sticky="e")
+    new_costing_total_other_entry = ttkb.Entry(new_costing_screen, width=30)
+    new_costing_total_other_entry.grid(row=29, column=1, padx=10, pady=10)
 
 mainscreen()
 root.mainloop()
