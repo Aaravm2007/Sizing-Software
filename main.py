@@ -692,7 +692,7 @@ def add_row_frame():
         text_area4.pack(side="top", fill="both", expand=True)
         row_frames.append(row_frame)
         text_areas.append((text_area1, text_area2, text_area3, text_area4))
-        text_area2.insert("1.0", f"Solution1: Lithium Battery Pack\n(HVL {offered_battery_config_value}) with\n Approximate Backup Time: {math.floor(backup_time)}Mins At BOL \n With Cabinet and inbuilt BMS")
+        text_area2.insert("1.0", f"Solution{sr_no}: Lithium Battery Pack\n(HVL {offered_battery_config_value}) with\n Approximate Backup Time: {math.floor(backup_time)}Mins At BOL \n With Cabinet and inbuilt BMS")
         text_area3.insert("1.0", "1")
         if option == 1:
             if centretapping[0] == "centre tap":
