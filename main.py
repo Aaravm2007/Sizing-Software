@@ -1318,8 +1318,8 @@ def new_costing():
 
             tkmb.showinfo("Costing Table Entry", f"Added to costing table")
 
-        add_to_costing_button = ttkb.Button(cost_calc_frame, text="Add To Costing Table", command=add_to_costing_table, bootstyle="success")
-        add_to_costing_button.grid(row=9, column=4, columnspan=2, pady=10)
+        add_to_costing_button = ttkb.Button(new_costing_screen, text="Add To Costing Table", command=add_to_costing_table, bootstyle="success")
+        add_to_costing_button.grid(row=8, column=4, columnspan=2, pady=10)
 
 
 
