@@ -19,7 +19,7 @@ sheet2 = wb2.active
 root=ttkb.Window(themename="darkly")
 root.title("Sizing System")
 root.geometry("960x860")
-root.resizable(False,False)
+root.resizable(False, False)
 
 global ups_make_entry, ups_model_entry, ups_rating_entry, actual_loadkva_entry, actual_loadkw_entry
 global power_factor_entry, inverter_efficiency_entry, nominal_dc_voltage_entry, backup_requirement_entry
@@ -599,6 +599,7 @@ def costing_screen():
     new_sizig_button.grid(row=0, column=1, padx=5)
 
 def quotation():
+    global quote_window
     quote_window = ttkb.Toplevel()
     quote_window.title("Quotation")
     global main_frame
@@ -647,15 +648,97 @@ def quotation():
 def option1():
     global option
     option=1
-    add_row_frame()
+    if new_costing_screen:
+        # Get data from Option 1 in the treeview and insert into new_costing entries
+        option_column = "Option 1"
+        tree_items = tree.get_children()
+        if tree_items:
+            # Get values from Option 1 column for each row
+            option1_values = [tree.set(item, option_column) for item in tree_items]
+            # Insert values into new_costing entries if available
+            entry_list = [
+                new_costing_voltageentry, new_costing_capacityentry, new_costing_kw_entry,
+                new_costing_cell_voltage_entry, new_costing_cell_capacity_entry, new_costing_series_entry,
+                new_costing_parallel_entry, new_costing_total_cells_entry, new_costing_fob_cost_entry,
+                new_costing_total_fob_entry, new_costing_customs_entry, new_costing_landed_entry,
+                new_costing_inr1_entry, new_costing_bms_entry, new_costing_customs2_entry,
+                new_costing_landed2_entry, new_costing_inr2_entry, new_costing_cabinet_entry,
+                new_costing_busbar_entry, new_costing_holder_entry, new_costing_wire_gasket_entry,
+                new_costing_terminals_entry, new_costing_mcb_entry, new_costing_lugs_entry,
+                new_costing_nutbolts_entry, new_costing_fiberglass_entry, new_costing_awg_entry,
+                new_costing_shipping_entry, new_costing_packaging_entry, new_costing_total_other_entry,
+                new_costing_landing_cost_entry, new_costing_labour_entry, new_costing_warranty_entry,
+                new_costing_total_cost_entry, new_costing_margin10_entry, new_costing_est_sales_b_entry,
+                new_costing_margin15_entry, new_costing_est_sales_b5_entry, new_costing_perkw_cost_entry,
+                new_costing_perkw_profit1_entry, new_costing_perkw_profit2_entry
+            ]
+            for entry, value in zip(entry_list, option1_values):
+                entry.delete(0, tk.END)
+                entry.insert(0, value)
+    elif quote_window:
+        add_row_frame()
 def option2():
     global option
     option=2
-    add_row_frame()
+    if new_costing_screen:
+        option_column = "Option 2"
+        tree_items = tree.get_children()
+        if tree_items:
+            # Get values from Option 2 column for each row
+            option2_values = [tree.set(item, option_column) for item in tree_items]
+            # Insert values into new_costing entries if available
+            entry_list = [
+                new_costing_voltageentry, new_costing_capacityentry, new_costing_kw_entry,
+                new_costing_cell_voltage_entry, new_costing_cell_capacity_entry, new_costing_series_entry,
+                new_costing_parallel_entry, new_costing_total_cells_entry, new_costing_fob_cost_entry,
+                new_costing_total_fob_entry, new_costing_customs_entry, new_costing_landed_entry,
+                new_costing_inr1_entry, new_costing_bms_entry, new_costing_customs2_entry,
+                new_costing_landed2_entry, new_costing_inr2_entry, new_costing_cabinet_entry,
+                new_costing_busbar_entry, new_costing_holder_entry, new_costing_wire_gasket_entry,
+                new_costing_terminals_entry, new_costing_mcb_entry, new_costing_lugs_entry,
+                new_costing_nutbolts_entry, new_costing_fiberglass_entry, new_costing_awg_entry,
+                new_costing_shipping_entry, new_costing_packaging_entry, new_costing_total_other_entry,
+                new_costing_landing_cost_entry, new_costing_labour_entry, new_costing_warranty_entry,
+                new_costing_total_cost_entry, new_costing_margin10_entry, new_costing_est_sales_b_entry,
+                new_costing_margin15_entry, new_costing_est_sales_b5_entry, new_costing_perkw_cost_entry,
+                new_costing_perkw_profit1_entry, new_costing_perkw_profit2_entry
+            ]
+            for entry, value in zip(entry_list, option2_values):
+                entry.delete(0, tk.END)
+                entry.insert(0, value)
+    elif quote_window:
+        add_row_frame()
 def option3():
     global option
     option=3
-    add_row_frame()
+    if new_costing_screen:
+        option_column = "Option 3"
+        tree_items = tree.get_children()
+        if tree_items:
+            # Get values from Option 3 column for each row
+            option3_values = [tree.set(item, option_column) for item in tree_items]
+            # Insert values into new_costing entries if available
+            entry_list = [
+                new_costing_voltageentry, new_costing_capacityentry, new_costing_kw_entry,
+                new_costing_cell_voltage_entry, new_costing_cell_capacity_entry, new_costing_series_entry,
+                new_costing_parallel_entry, new_costing_total_cells_entry, new_costing_fob_cost_entry,
+                new_costing_total_fob_entry, new_costing_customs_entry, new_costing_landed_entry,
+                new_costing_inr1_entry, new_costing_bms_entry, new_costing_customs2_entry,
+                new_costing_landed2_entry, new_costing_inr2_entry, new_costing_cabinet_entry,
+                new_costing_busbar_entry, new_costing_holder_entry, new_costing_wire_gasket_entry,
+                new_costing_terminals_entry, new_costing_mcb_entry, new_costing_lugs_entry,
+                new_costing_nutbolts_entry, new_costing_fiberglass_entry, new_costing_awg_entry,
+                new_costing_shipping_entry, new_costing_packaging_entry, new_costing_total_other_entry,
+                new_costing_landing_cost_entry, new_costing_labour_entry, new_costing_warranty_entry,
+                new_costing_total_cost_entry, new_costing_margin10_entry, new_costing_est_sales_b_entry,
+                new_costing_margin15_entry, new_costing_est_sales_b5_entry, new_costing_perkw_cost_entry,
+                new_costing_perkw_profit1_entry, new_costing_perkw_profit2_entry
+            ]
+            for entry, value in zip(entry_list, option3_values):
+                entry.delete(0, tk.END)
+                entry.insert(0, value)
+    elif quote_window:
+        add_row_frame()
 
 def add_row_frame():
         row_frame = ttkb.Frame(main_frame)
@@ -722,7 +805,6 @@ def new_costing():
         dollar_rate = dollar_rate_entry.get()
         try:
             dollar_rate = float(dollar_rate)
-            tkmb.showinfo("Success", "Dollar rate set successfully.")
             dollar_rate_src.destroy()
             costing_input()
         except ValueError:
@@ -736,6 +818,48 @@ def new_costing():
     dollar_rate_button = ttkb.Button(dollar_rate_src, text="Set Rate",command=set_dollar_rate)
     dollar_rate_button.grid(row=1, column=0, columnspan=2, pady=10)
     def costing_input():
+        global new_costing_screen
+        global new_costing_voltageentry
+        global new_costing_capacityentry
+        global new_costing_kw_entry
+        global new_costing_cell_voltage_entry
+        global new_costing_cell_capacity_entry
+        global new_costing_series_entry
+        global new_costing_parallel_entry
+        global new_costing_total_cells_entry
+        global new_costing_fob_cost_entry
+        global new_costing_total_fob_entry
+        global new_costing_customs_entry
+        global new_costing_landed_entry
+        global new_costing_inr1_entry
+        global new_costing_bms_entry
+        global new_costing_customs2_entry
+        global new_costing_landed2_entry
+        global new_costing_inr2_entry
+        global new_costing_cabinet_entry
+        global new_costing_busbar_entry
+        global new_costing_holder_entry
+        global new_costing_wire_gasket_entry
+        global new_costing_terminals_entry
+        global new_costing_mcb_entry
+        global new_costing_lugs_entry
+        global new_costing_nutbolts_entry
+        global new_costing_fiberglass_entry
+        global new_costing_awg_entry
+        global new_costing_shipping_entry
+        global new_costing_packaging_entry
+        global new_costing_total_other_entry
+        global new_costing_landing_cost_entry
+        global new_costing_labour_entry
+        global new_costing_warranty_entry
+        global new_costing_total_cost_entry
+        global new_costing_margin10_entry
+        global new_costing_est_sales_b_entry
+        global new_costing_margin15_entry
+        global new_costing_est_sales_b5_entry
+        global new_costing_perkw_cost_entry
+        global new_costing_perkw_profit1_entry
+        global new_costing_perkw_profit2_entry
         new_costing_screen = ttkb.Toplevel()
         new_costing_screen.title("New Costing")
 
@@ -797,7 +921,7 @@ def new_costing():
 
         # --- Group: Battery Details ---
         battery_details_frame = ttkb.LabelFrame(new_costing_screen, text="Battery Details", bootstyle="info")
-        battery_details_frame.grid(row=0, column=0, columnspan=2, padx=10, pady=10, sticky="ew")
+        battery_details_frame.grid(row=0, column=0, columnspan=2, rowspan=7, padx=10, pady=10, sticky="ew")
 
         new_costing_voltagelabel = ttkb.Label(battery_details_frame, text="Voltage:")
         new_costing_voltagelabel.grid(row=0, column=0, padx=10, pady=5, sticky="e")
@@ -863,7 +987,7 @@ def new_costing():
 
         # --- Group: Cell Costing Details (1) ---
         cell_costing_frame = ttkb.LabelFrame(new_costing_screen, text="Cell Costing Details (1)", bootstyle="info")
-        cell_costing_frame.grid(row=0, column=2, columnspan=2, padx=10, pady=10, sticky="ew")
+        cell_costing_frame.grid(row=0, column=2, columnspan=2, rowspan=6,padx=10, pady=10, sticky="ew")
 
         # Total No Of Cells
         new_costing_total_cells_label = ttkb.Label(cell_costing_frame, text="Total No Of Cells:")
@@ -941,7 +1065,7 @@ def new_costing():
 
         # --- Group: BMS/PCM & Landed Cost (2) ---
         bms_landed_frame = ttkb.LabelFrame(new_costing_screen, text="BMS/PCM (2)", bootstyle="info")
-        bms_landed_frame.grid(row=7, column=0, columnspan=2, padx=10, pady=10, sticky="ew")
+        bms_landed_frame.grid(row=7, column=0, columnspan=2,rowspan=4, padx=10, pady=10, sticky="ew")
 
         # BMS/PCM
         new_costing_bms_label = ttkb.Label(bms_landed_frame, text="BMS/PCM: $")
@@ -1003,7 +1127,7 @@ def new_costing():
 
         # --- Group: Other Components & Charges --- 
         other_components_frame = ttkb.LabelFrame(new_costing_screen, text="Other Components & Charges", bootstyle="info")
-        other_components_frame.grid(row=7, column=2, columnspan=2, padx=10, pady=10, sticky="ew")
+        other_components_frame.grid(row=6, column=2,rowspan=13,columnspan=2, padx=10, pady=10, sticky="ew")
 
         # Cabinet (INR)
         new_costing_cabinet_label = ttkb.Label(other_components_frame, text="Cabinet (INR): ₹")
@@ -1168,7 +1292,7 @@ def new_costing():
 
         # --- Group: Cost Calculations & Margins ---
         cost_calc_frame = ttkb.LabelFrame(new_costing_screen, text="Cost Calculations & Margins", bootstyle="info")
-        cost_calc_frame.grid(row=0, column=4, columnspan=2,rowspan=8, padx=10, pady=10, sticky="ew")
+        cost_calc_frame.grid(row=0, column=4, columnspan=2, rowspan=10, padx=10, pady=10, sticky="ew")
 
         # Landing cost of material (1+2+3)
         new_costing_landing_cost_label = ttkb.Label(cost_calc_frame, text="Landing cost of material (1+2+3): ₹")
@@ -1317,9 +1441,12 @@ def new_costing():
                         tree.set(item_id, "Option 1", "")
 
             tkmb.showinfo("Costing Table Entry", f"Added to costing table")
+            new_costing_screen.destroy()
 
         add_to_costing_button = ttkb.Button(new_costing_screen, text="Add To Costing Table", command=add_to_costing_table, bootstyle="success")
-        add_to_costing_button.grid(row=8, column=4, columnspan=2, pady=10)
+        add_to_costing_button.grid(row=10, column=4, columnspan=2, pady=10)
+        button = ttkb.Button(new_costing_screen, text="Save To Database", bootstyle="success")
+        button.grid(row=11, column=4, columnspan=2, pady=10)
 
 
 
