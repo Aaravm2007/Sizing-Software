@@ -648,97 +648,121 @@ def quotation():
 def option1():
     global option
     option=1
-    if new_costing_screen:
-        # Get data from Option 1 in the treeview and insert into new_costing entries
-        option_column = "Option 1"
-        tree_items = tree.get_children()
-        if tree_items:
-            # Get values from Option 1 column for each row
-            option1_values = [tree.set(item, option_column) for item in tree_items]
-            # Insert values into new_costing entries if available
-            entry_list = [
-                new_costing_voltageentry, new_costing_capacityentry, new_costing_kw_entry,
-                new_costing_cell_voltage_entry, new_costing_cell_capacity_entry, new_costing_series_entry,
-                new_costing_parallel_entry, new_costing_total_cells_entry, new_costing_fob_cost_entry,
-                new_costing_total_fob_entry, new_costing_customs_entry, new_costing_landed_entry,
-                new_costing_inr1_entry, new_costing_bms_entry, new_costing_customs2_entry,
-                new_costing_landed2_entry, new_costing_inr2_entry, new_costing_cabinet_entry,
-                new_costing_busbar_entry, new_costing_holder_entry, new_costing_wire_gasket_entry,
-                new_costing_terminals_entry, new_costing_mcb_entry, new_costing_lugs_entry,
-                new_costing_nutbolts_entry, new_costing_fiberglass_entry, new_costing_awg_entry,
-                new_costing_shipping_entry, new_costing_packaging_entry, new_costing_total_other_entry,
-                new_costing_landing_cost_entry, new_costing_labour_entry, new_costing_warranty_entry,
-                new_costing_total_cost_entry, new_costing_margin10_entry, new_costing_est_sales_b_entry,
-                new_costing_margin15_entry, new_costing_est_sales_b5_entry, new_costing_perkw_cost_entry,
-                new_costing_perkw_profit1_entry, new_costing_perkw_profit2_entry
-            ]
-            for entry, value in zip(entry_list, option1_values):
-                entry.delete(0, tk.END)
-                entry.insert(0, value)
-    elif quote_window:
-        add_row_frame()
+    try:
+        if new_costing_screen:
+            # Get data from Option 1 in the treeview and insert into new_costing entries
+            option_column = "Option 1"
+            tree_items = tree.get_children()
+            if tree_items:
+                # Get values from Option 1 column for each row
+                option1_values = [tree.set(item, option_column) for item in tree_items]
+                # Insert values into new_costing entries if available
+                entry_list = [
+                    new_costing_voltageentry, new_costing_capacityentry, new_costing_kw_entry,
+                    new_costing_cell_voltage_entry, new_costing_cell_capacity_entry, new_costing_series_entry,
+                    new_costing_parallel_entry, new_costing_total_cells_entry, new_costing_fob_cost_entry,
+                    new_costing_total_fob_entry, new_costing_customs_entry, new_costing_landed_entry,
+                    new_costing_inr1_entry, new_costing_bms_entry, new_costing_customs2_entry,
+                    new_costing_landed2_entry, new_costing_inr2_entry, new_costing_cabinet_entry,
+                    new_costing_busbar_entry, new_costing_holder_entry, new_costing_wire_gasket_entry,
+                    new_costing_terminals_entry, new_costing_mcb_entry, new_costing_lugs_entry,
+                    new_costing_nutbolts_entry, new_costing_fiberglass_entry, new_costing_awg_entry,
+                    new_costing_shipping_entry, new_costing_packaging_entry, new_costing_total_other_entry,
+                    new_costing_landing_cost_entry, new_costing_labour_entry, new_costing_warranty_entry,
+                    new_costing_total_cost_entry, new_costing_margin10_entry, new_costing_est_sales_b_entry,
+                    new_costing_margin15_entry, new_costing_est_sales_b5_entry, new_costing_perkw_cost_entry,
+                    new_costing_perkw_profit1_entry, new_costing_perkw_profit2_entry
+                ]
+                for entry, value in zip(entry_list, option1_values):
+                    entry.delete(0, tk.END)
+                    entry.insert(0, value)
+        elif quote_window:
+            add_row_frame()
+    except Exception as e:
+        print(f"Error in option1: {e}")
+    try:
+        if quote_window:
+            add_row_frame()
+    except Exception as e:
+        print(f"Error in add_row_frame: {e}")
 def option2():
     global option
     option=2
-    if new_costing_screen:
-        option_column = "Option 2"
-        tree_items = tree.get_children()
-        if tree_items:
-            # Get values from Option 2 column for each row
-            option2_values = [tree.set(item, option_column) for item in tree_items]
-            # Insert values into new_costing entries if available
-            entry_list = [
-                new_costing_voltageentry, new_costing_capacityentry, new_costing_kw_entry,
-                new_costing_cell_voltage_entry, new_costing_cell_capacity_entry, new_costing_series_entry,
-                new_costing_parallel_entry, new_costing_total_cells_entry, new_costing_fob_cost_entry,
-                new_costing_total_fob_entry, new_costing_customs_entry, new_costing_landed_entry,
-                new_costing_inr1_entry, new_costing_bms_entry, new_costing_customs2_entry,
-                new_costing_landed2_entry, new_costing_inr2_entry, new_costing_cabinet_entry,
-                new_costing_busbar_entry, new_costing_holder_entry, new_costing_wire_gasket_entry,
-                new_costing_terminals_entry, new_costing_mcb_entry, new_costing_lugs_entry,
-                new_costing_nutbolts_entry, new_costing_fiberglass_entry, new_costing_awg_entry,
-                new_costing_shipping_entry, new_costing_packaging_entry, new_costing_total_other_entry,
-                new_costing_landing_cost_entry, new_costing_labour_entry, new_costing_warranty_entry,
-                new_costing_total_cost_entry, new_costing_margin10_entry, new_costing_est_sales_b_entry,
-                new_costing_margin15_entry, new_costing_est_sales_b5_entry, new_costing_perkw_cost_entry,
-                new_costing_perkw_profit1_entry, new_costing_perkw_profit2_entry
-            ]
-            for entry, value in zip(entry_list, option2_values):
-                entry.delete(0, tk.END)
-                entry.insert(0, value)
-    elif quote_window:
-        add_row_frame()
+    try:
+        if new_costing_screen:
+            option_column = "Option 2"
+            tree_items = tree.get_children()
+            if tree_items:
+                # Get values from Option 2 column for each row
+                option2_values = [tree.set(item, option_column) for item in tree_items]
+                # Insert values into new_costing entries if available
+                entry_list = [
+                    new_costing_voltageentry, new_costing_capacityentry, new_costing_kw_entry,
+                    new_costing_cell_voltage_entry, new_costing_cell_capacity_entry, new_costing_series_entry,
+                    new_costing_parallel_entry, new_costing_total_cells_entry, new_costing_fob_cost_entry,
+                    new_costing_total_fob_entry, new_costing_customs_entry, new_costing_landed_entry,
+                    new_costing_inr1_entry, new_costing_bms_entry, new_costing_customs2_entry,
+                    new_costing_landed2_entry, new_costing_inr2_entry, new_costing_cabinet_entry,
+                    new_costing_busbar_entry, new_costing_holder_entry, new_costing_wire_gasket_entry,
+                    new_costing_terminals_entry, new_costing_mcb_entry, new_costing_lugs_entry,
+                    new_costing_nutbolts_entry, new_costing_fiberglass_entry, new_costing_awg_entry,
+                    new_costing_shipping_entry, new_costing_packaging_entry, new_costing_total_other_entry,
+                    new_costing_landing_cost_entry, new_costing_labour_entry, new_costing_warranty_entry,
+                    new_costing_total_cost_entry, new_costing_margin10_entry, new_costing_est_sales_b_entry,
+                    new_costing_margin15_entry, new_costing_est_sales_b5_entry, new_costing_perkw_cost_entry,
+                    new_costing_perkw_profit1_entry, new_costing_perkw_profit2_entry
+                ]
+                for entry, value in zip(entry_list, option2_values):
+                    entry.delete(0, tk.END)
+                    entry.insert(0, value)
+        elif quote_window:
+            add_row_frame()
+    except Exception as e:
+        print(f"Error in option2: {e}")
+    try:
+        if quote_window:
+            add_row_frame()
+    except Exception as e:
+        print(f"Error in add_row_frame: {e}")
 def option3():
     global option
     option=3
-    if new_costing_screen:
-        option_column = "Option 3"
-        tree_items = tree.get_children()
-        if tree_items:
-            # Get values from Option 3 column for each row
-            option3_values = [tree.set(item, option_column) for item in tree_items]
-            # Insert values into new_costing entries if available
-            entry_list = [
-                new_costing_voltageentry, new_costing_capacityentry, new_costing_kw_entry,
-                new_costing_cell_voltage_entry, new_costing_cell_capacity_entry, new_costing_series_entry,
-                new_costing_parallel_entry, new_costing_total_cells_entry, new_costing_fob_cost_entry,
-                new_costing_total_fob_entry, new_costing_customs_entry, new_costing_landed_entry,
-                new_costing_inr1_entry, new_costing_bms_entry, new_costing_customs2_entry,
-                new_costing_landed2_entry, new_costing_inr2_entry, new_costing_cabinet_entry,
-                new_costing_busbar_entry, new_costing_holder_entry, new_costing_wire_gasket_entry,
-                new_costing_terminals_entry, new_costing_mcb_entry, new_costing_lugs_entry,
-                new_costing_nutbolts_entry, new_costing_fiberglass_entry, new_costing_awg_entry,
-                new_costing_shipping_entry, new_costing_packaging_entry, new_costing_total_other_entry,
-                new_costing_landing_cost_entry, new_costing_labour_entry, new_costing_warranty_entry,
-                new_costing_total_cost_entry, new_costing_margin10_entry, new_costing_est_sales_b_entry,
-                new_costing_margin15_entry, new_costing_est_sales_b5_entry, new_costing_perkw_cost_entry,
-                new_costing_perkw_profit1_entry, new_costing_perkw_profit2_entry
-            ]
-            for entry, value in zip(entry_list, option3_values):
-                entry.delete(0, tk.END)
-                entry.insert(0, value)
-    elif quote_window:
-        add_row_frame()
+    try:
+        if new_costing_screen:
+            option_column = "Option 3"
+            tree_items = tree.get_children()
+            if tree_items:
+                # Get values from Option 3 column for each row
+                option3_values = [tree.set(item, option_column) for item in tree_items]
+                # Insert values into new_costing entries if available
+                entry_list = [
+                    new_costing_voltageentry, new_costing_capacityentry, new_costing_kw_entry,
+                    new_costing_cell_voltage_entry, new_costing_cell_capacity_entry, new_costing_series_entry,
+                    new_costing_parallel_entry, new_costing_total_cells_entry, new_costing_fob_cost_entry,
+                    new_costing_total_fob_entry, new_costing_customs_entry, new_costing_landed_entry,
+                    new_costing_inr1_entry, new_costing_bms_entry, new_costing_customs2_entry,
+                    new_costing_landed2_entry, new_costing_inr2_entry, new_costing_cabinet_entry,
+                    new_costing_busbar_entry, new_costing_holder_entry, new_costing_wire_gasket_entry,
+                    new_costing_terminals_entry, new_costing_mcb_entry, new_costing_lugs_entry,
+                    new_costing_nutbolts_entry, new_costing_fiberglass_entry, new_costing_awg_entry,
+                    new_costing_shipping_entry, new_costing_packaging_entry, new_costing_total_other_entry,
+                    new_costing_landing_cost_entry, new_costing_labour_entry, new_costing_warranty_entry,
+                    new_costing_total_cost_entry, new_costing_margin10_entry, new_costing_est_sales_b_entry,
+                    new_costing_margin15_entry, new_costing_est_sales_b5_entry, new_costing_perkw_cost_entry,
+                    new_costing_perkw_profit1_entry, new_costing_perkw_profit2_entry
+                ]
+                for entry, value in zip(entry_list, option3_values):
+                    entry.delete(0, tk.END)
+                    entry.insert(0, value)
+        elif quote_window:
+            add_row_frame()
+    except Exception as e:
+        print(f"Error in option3: {e}")
+    try:
+        if quote_window:
+            add_row_frame()
+    except Exception as e:
+        print(f"Error in add_row_frame: {e}")
 
 def add_row_frame():
         row_frame = ttkb.Frame(main_frame)
