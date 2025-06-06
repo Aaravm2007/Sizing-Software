@@ -583,12 +583,12 @@ def costing_screen():
         backup_time_entry.insert(0, backup_time)
     button_frame = ttkb.Frame(costing_frame)
     button_frame.grid(row=4, column=1 ,pady=10,columnspan=2)
-    option1_button = ttkb.Button(button_frame, text="Add To Quotation", command=option1,bootstyle="warning")
-    option1_button.grid(row=0, column=0, padx=40)
-    option2_button = ttkb.Button(button_frame, text="Add To Quotation", command=option2,bootstyle="warning")
-    option2_button.grid(row=0, column=1, padx=40)
-    option3_button = ttkb.Button(button_frame, text="Add To Quotation", command=option3,bootstyle="warning")
-    option3_button.grid(row=0, column=2, padx=40)
+    option1_button = ttkb.Button(button_frame, text="Option1", command=option1,bootstyle="warning")
+    option1_button.grid(row=0, column=0, padx=70)
+    option2_button = ttkb.Button(button_frame, text="Option2", command=option2,bootstyle="warning")
+    option2_button.grid(row=0, column=1, padx=70)
+    option3_button = ttkb.Button(button_frame, text="Option3", command=option3,bootstyle="warning")
+    option3_button.grid(row=0, column=2, padx=70)
     make_quote_button = ttkb.Button(costing_frame, text="Make Quote", command=quotation,bootstyle="success")
     make_quote_button.grid(row=5, column=1, pady=20)
     button_frame2= ttkb.Frame(costing_frame)
@@ -679,12 +679,12 @@ def option1():
         elif quote_window:
             add_row_frame()
     except Exception as e:
-        print(f"Error in option1: {e}")
+        pass
     try:
         if quote_window:
             add_row_frame()
     except Exception as e:
-        print(f"Error in add_row_frame: {e}")
+        pass
 def option2():
     global option
     option=2
@@ -718,12 +718,12 @@ def option2():
         elif quote_window:
             add_row_frame()
     except Exception as e:
-        print(f"Error in option2: {e}")
+        pass
     try:
         if quote_window:
             add_row_frame()
     except Exception as e:
-        print(f"Error in add_row_frame: {e}")
+        pass
 def option3():
     global option
     option=3
@@ -757,12 +757,12 @@ def option3():
         elif quote_window:
             add_row_frame()
     except Exception as e:
-        print(f"Error in option3: {e}")
+        pass
     try:
         if quote_window:
             add_row_frame()
     except Exception as e:
-        print(f"Error in add_row_frame: {e}")
+        pass
 
 def add_row_frame():
         row_frame = ttkb.Frame(main_frame)
