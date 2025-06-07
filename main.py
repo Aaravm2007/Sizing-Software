@@ -809,15 +809,21 @@ def add_row_frame():
             text_area1.insert("1.0", f"{ups_rating}KVA: {backup_requirement}Min Backup \n(Load: {calc_load}kW)\n(Cell type:)\n({centretapping_text})")
             text_area4.insert("1.0", round(prices[0],2))
         elif option == 2:
-            if centretapping[1] == "centre tap":
-                centretapping_text = "With Centre Tapping"
+            if centretapping[1]:
+                if centretapping[1] == "centre tap":
+                    centretapping_text = "With Centre Tapping"
+                else:
+                    centretapping_text = "Without Centre Tapping"
             else:
                 centretapping_text = "Without Centre Tapping"
             text_area1.insert("1.0", f"{ups_rating}KVA: {backup_requirement}Min Backup \n(Load: {calc_load}kW)\n(Cell type:)\n({centretapping_text})")
             text_area4.insert("1.0", round(prices[1],2))
         elif option == 3:
-            if centretapping[2] == "centre tap":
-                centretapping_text = "With Centre Tapping"
+            if centretapping[2]:
+                if centretapping[2] == "centre tap":
+                    centretapping_text = "With Centre Tapping"
+                else:
+                    centretapping_text = "Without Centre Tapping"
             else:
                 centretapping_text = "Without Centre Tapping"
             text_area1.insert("1.0", f"{ups_rating}KVA: {backup_requirement}Min Backup \n(Load: {calc_load}kW)\n(Cell type:)\n({centretapping_text})")
