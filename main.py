@@ -802,8 +802,11 @@ def add_row_frame():
         text_area2.insert("1.0", f"Solution{sr_no}: Lithium Battery Pack\n(HVL {offered_battery_config_value}) with\n Approximate Backup Time: {math.floor(backup_time)}Mins At BOL \n With Cabinet and inbuilt BMS")
         text_area3.insert("1.0", "1")
         if option == 1:
-            if centretapping[0] == "centre tap":
-                centretapping_text = "With Centre Tapping"
+            if centretapping[0]:
+                if centretapping[0] == "centre tap":
+                    centretapping_text = "With Centre Tapping"
+                else:
+                    centretapping_text = "Without Centre Tapping"
             else:
                 centretapping_text = "Without Centre Tapping"
             text_area1.insert("1.0", f"{ups_rating}KVA: {backup_requirement}Min Backup \n(Load: {calc_load}kW)\n(Cell type:)\n({centretapping_text})")
