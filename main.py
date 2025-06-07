@@ -679,12 +679,12 @@ def option1():
         elif quote_window:
             add_row_frame()
     except Exception as e:
-        print(f"Error in option1: {e}")
+        pass
     try:
         if quote_window:
             add_row_frame()
     except Exception as e:
-        print(f"Error in add_row_frame: {e}")
+        pass
 def option2():
     global option
     option=2
@@ -718,12 +718,12 @@ def option2():
         elif quote_window:
             add_row_frame()
     except Exception as e:
-        print(f"Error in option2: {e}")
+        pass
     try:
         if quote_window:
             add_row_frame()
     except Exception as e:
-        print(f"Error in add_row_frame: {e}")
+        pass
 def option3():
     global option
     option=3
@@ -757,12 +757,12 @@ def option3():
         elif quote_window:
             add_row_frame()
     except Exception as e:
-        print(f"Error in option3: {e}")
+        pass
     try:
         if quote_window:
             add_row_frame()
     except Exception as e:
-        print(f"Error in add_row_frame: {e}")
+        pass
 
 def add_row_frame():
         row_frame = ttkb.Frame(main_frame)
